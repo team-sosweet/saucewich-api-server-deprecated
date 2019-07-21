@@ -22,4 +22,3 @@ class User(BaseModel):
 
     # The unit is in seconds.
     playtime = BigIntegerField(default=0)
-

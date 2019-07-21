@@ -27,6 +27,10 @@ class BaseModel(AioModel):
         return await cls.get(cls._meta.primary_key == pk)
 
     @classmethod
+    async def get_by_id_or_404(cls, pk):
+        return await cls.get_or_404(cls._meta.primary_key == pk)
+
+    @classmethod
     async def get_or_404(cls, *query, **filters):
         try:
             return await cls.get(*query, **filters)
