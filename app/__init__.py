@@ -16,8 +16,8 @@ def register_blueprints(app: Sanic):
     # Add swagger blueprint
     app.blueprint(swagger_blueprint)
 
-    from app.views.api.user import user
-    app.blueprint(user)
+    from app.views.api import user
+    app.blueprint(user.blueprint)
 
 
 def create_app() -> Sanic:
