@@ -1,8 +1,9 @@
 from sanic import Sanic
-from sanic.response import json
+from sanic.exceptions import NotFound
+from sanic.response import json, text
 from sanic_openapi import swagger_blueprint
 
-from app import listeners
+from app import listeners, exceptions
 from app.config.dev import DevConfig
 from app.models import db
 from app.models.user import User
@@ -20,6 +21,10 @@ def register_blueprints(app: Sanic):
     app.blueprint(user.blueprint)
 
 
+def register_exceptions(app: Sanic):
+    app.error_handler.add(NotFound, exceptions.not_found)
+
+
 def create_app() -> Sanic:
     app = Sanic(__name__)
 
@@ -27,8 +32,6 @@ def create_app() -> Sanic:
 
     register_listeners(app)
     register_blueprints(app)
+    register_exceptions(app)
 
-    @app.get('/test')
-    def root(request):
-        return json({'2':2})
     return app
