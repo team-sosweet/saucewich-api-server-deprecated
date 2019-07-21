@@ -1,19 +1,19 @@
 from aiopeewee import model_to_dict
 from sanic import Blueprint
-from sanic.exceptions import abort
 from sanic.response import json
 from sanic.views import HTTPMethodView
 
-from app.models.user import User
+from app import User
+from app.views.api.user.money import MoneyView
 
-
-blueprint = Blueprint(__name__)
-
-class UserResource(HTTPMethodView):
+class UserView(HTTPMethodView):
     async def get(self, request, user_id: int):
         user = await User.get_or_404(User.id == user_id)
         return json(
             await model_to_dict(user)
         )
 
-blueprint.add_route(UserResource.as_view(), '/user/<user_id>')
+blueprint = Blueprint('user-api', '/user/<user_id>')
+
+blueprint.add_route(UserView.as_view(), '/')
+blueprint.add_route(MoneyView.as_view(), '/money')
