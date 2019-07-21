@@ -9,7 +9,8 @@ gitlint = "*"
 
 [packages]
 sanic = "*"
-gino = "*"
+aiopeewee = "*"
+peewee = "==2.9"
 
 [requires]
 python_version = "3.7"
