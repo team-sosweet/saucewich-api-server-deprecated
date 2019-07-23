@@ -3,7 +3,7 @@ from sanic.exceptions import NotFound
 from sanic.response import json, text
 from sanic_openapi import swagger_blueprint
 
-from app import listeners, exceptions
+from app.core import listeners, exceptions
 from app.config.dev import DevConfig
 from app.models import db
 from app.models.user import User
