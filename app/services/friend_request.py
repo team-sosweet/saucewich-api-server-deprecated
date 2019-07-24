@@ -12,10 +12,7 @@ class FriendRequestService:
 
     async def create(self, friend_request: Dict[str, Any]):
         try:
-            await self.repository.save(
-                friend_request['sender'],
-                friend_request['recipient'],
-            )
+            await self.repository.save(friend_request)
         except IntegrityError:
             abort(409)
         except KeyError:
