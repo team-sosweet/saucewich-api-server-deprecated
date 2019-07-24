@@ -16,6 +16,10 @@ class UserService:
             await self.repository.save(user)
         except IntegrityError:
             abort(409)
+        except KeyError:
+            abort(400)
+        except TypeError:
+            abort(400)
 
     async def patch(self, username: str, patch_data: Dict[str, Any]):
         if not await self.repository.get(username):
