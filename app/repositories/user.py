@@ -12,34 +12,29 @@ class UserRepository:
         'exp',
         'point',
         'money',
-        'kill',
-        'death',
-        'win',
-        'defeat',
+        'kill_stats',
+        'death_stats',
+        'win_stats',
+        'defeat_stats',
         'playtime',
     ]
 
     table_creation_query = """
-        CREATE TABLE IF NOT EXISTS users (
-            username VARCHAR(20) NOT NULL PRIMARY KEY,
-            password VARCHAR(100) NOT NULL,
-            nickname VARCHAR(20) NOT NULL,
-            
-            exp BIGINT DEFAULT 0,
-            point BIGINT DEFAULT 0,
-            money BIGINT DEFAULT 0,
-            
-            kill BIGINT DEFAULT 0,
-            death BIGINT DEFAULT 0,
-            
-            win BIGINT DEFAULT 0,
-            defeat BIGINT DEFAULT 0,
-            
-            playtime BIGINT DEFAULT 0,
-            
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-        ) CHARACTER SET utf8mb4;
+            CREATE TABLE IF NOT EXISTS users (
+                username VARCHAR(20) NOT NULL PRIMARY KEY,
+                password VARCHAR(100) NOT NULL,
+                nickname VARCHAR(20) NOT NULL,
+                exp     BIGINT  DEFAULT 0,
+                point   BIGINT  DEFAULT 0,
+                money   BIGINT  DEFAULT 0,
+                kill_stats    BIGINT  DEFAULT 0,
+                death_stats   BIGINT  DEFAULT 0,
+                win_stats     BIGINT  DEFAULT 0,
+                defeat_stats  BIGINT  DEFAULT 0,
+                playtime BIGINT DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+            ) CHARACTER SET utf8mb4;
     """
 
     def __init__(self, connection: Type[DBConnection]):
