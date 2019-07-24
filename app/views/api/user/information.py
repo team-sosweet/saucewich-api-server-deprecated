@@ -9,7 +9,7 @@ class UserInformationView(HTTPMethodView):
     repository = UserRepository(MySQLConnection)
     service = UserService(repository)
 
-    async def get(self, request, username: int):
+    async def get(self, request, username: str):
         user = await self.service.get(username)
         del user['password']
         return json(user)
