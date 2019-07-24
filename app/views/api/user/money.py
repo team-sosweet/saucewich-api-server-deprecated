@@ -19,10 +19,12 @@ class UserMoneyView(HTTPMethodView):
 
     async def post(self, request: Request, username: str):
         user = await self.service.get(username)
-        user['money'] += request.json['money']
         await self.repository.patch(
             username,
             {
                 'money': user['money'] + request.json['money']
             }
         )
+        return json({
+            'success': True
+        })
