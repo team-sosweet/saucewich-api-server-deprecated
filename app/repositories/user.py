@@ -21,7 +21,8 @@ class UserRepository:
 
     table_creation_query = """
             CREATE TABLE IF NOT EXISTS users (
-                username VARCHAR(20) NOT NULL PRIMARY KEY,
+                seq INT(11) AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(20) NOT NULL UNIQUE,
                 password VARCHAR(100) NOT NULL,
                 nickname VARCHAR(20) NOT NULL,
                 exp     BIGINT  DEFAULT 0,
