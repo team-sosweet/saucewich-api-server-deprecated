@@ -66,8 +66,10 @@ class UserRepository:
 
         await self.connection.execute(
             query,
-            datetime.now(),
-            username
+            (
+                datetime.now(),
+                username,
+            ),
         )
 
         return True
@@ -108,7 +110,9 @@ class UserRepository:
 
         await self.connection.execute(
             query,
-            user['username'],
-            generate_password_hash(user['password']),
-            user['nickname'],
+            (
+                user['username'],
+                generate_password_hash(user['password']),
+                user['nickname'],
+            ),
         )
