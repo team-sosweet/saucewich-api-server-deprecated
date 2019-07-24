@@ -1,19 +1,20 @@
-from aiopeewee import model_to_dict
 from sanic import Blueprint
 from sanic.response import json
 from sanic.views import HTTPMethodView
 
-from app import User
-from app.views.api.user.money import MoneyView
+from app.repositories.connections import MySQLConnection
+from app.repositories.user import UserRepository
+from app.views.api.user.money import UserMoneyView
 
 class UserView(HTTPMethodView):
-    async def get(self, request, user_id: int):
-        user = await User.get_or_404(User.id == user_id)
-        return json(
-            await model_to_dict(user)
-        )
+    repository = UserRepository(MySQLConnection)
 
-blueprint = Blueprint('user-api', '/user/<user_id>')
+    async def get(self, request, username: int):
+        user = await self.repository.get(username)
+        del user['password']
+        return json(user)
+
+blueprint = Blueprint('user-api', '/user/<username>')
 
 blueprint.add_route(UserView.as_view(), '/')
-blueprint.add_route(MoneyView.as_view(), '/money')
+blueprint.add_route(UserMoneyView.as_view(), '/money')
