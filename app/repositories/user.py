@@ -41,7 +41,7 @@ class UserRepository:
         self.connection = connection
 
     async def get(self, username: str) -> Optional[Dict[str, Any]]:
-        query = "SELECT * FROM `users` WHERE username = %d"
+        query = "SELECT * FROM `users` WHERE username = %s"
         return await self.connection.fetchone(
             query,
             username,
