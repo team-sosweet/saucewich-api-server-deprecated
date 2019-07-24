@@ -13,7 +13,7 @@ class FriendRequestRepository:
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 
                 FOREIGN KEY (sender) REFERENCES users(seq),
-                FOREIGN KEY (recipient) REFERENCES users(seq)
+                FOREIGN KEY (recipient) REFERENCES users(seq),
                 
                 UNIQUE KEY `sender_recipient_id` (sender, recipient)
             ) CHARACTER SET utf8mb4;
