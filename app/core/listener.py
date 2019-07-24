@@ -1,6 +1,8 @@
 from sanic.log import logger
 
 from app.repositories.connections import MySQLConnection
+from app.repositories.friend import FriendRepository
+from app.repositories.friend_request import FriendRequestRepository
 from app.repositories.user import UserRepository
 
 
@@ -22,6 +24,8 @@ async def initialize(app, loop):
 
 async def migrate(app, loop):
     await MySQLConnection.execute(UserRepository.table_creation_query)
+    await MySQLConnection.execute(FriendRepository.table_creation_query)
+    await MySQLConnection.execute(FriendRequestRepository.table_creation_query)
 
     logger.info('Database migration is completed.')
 
