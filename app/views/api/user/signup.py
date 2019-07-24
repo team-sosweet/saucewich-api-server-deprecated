@@ -1,4 +1,3 @@
-from sanic.exceptions import abort
 from sanic.request import Request
 from sanic.response import json
 from sanic.views import HTTPMethodView

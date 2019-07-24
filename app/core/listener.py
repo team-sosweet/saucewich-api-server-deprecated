@@ -1,5 +1,3 @@
-import os
-
 from sanic.log import logger
 
 from app.repositories.connections import MySQLConnection
@@ -32,4 +30,3 @@ async def stop(app, loop):
     await MySQLConnection.destroy()
 
     logger.info('Database connection closed.')
-

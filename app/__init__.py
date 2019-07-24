@@ -2,8 +2,8 @@ from sanic import Sanic
 from sanic.exceptions import NotFound
 from sanic_openapi import swagger_blueprint
 
-from app.core import listener, handler
 from app.config.dev import DevConfig
+from app.core import listener, handler
 
 
 def register_listeners(app: Sanic):

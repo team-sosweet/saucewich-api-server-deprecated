@@ -3,7 +3,6 @@ from typing import Dict, Any, List
 from pymysql import IntegrityError
 from sanic.exceptions import abort
 
-from app.core.exceptions import UserAlreadyExists, UserNotFound
 from app.repositories.user import UserRepository
 
 

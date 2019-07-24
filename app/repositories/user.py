@@ -61,7 +61,7 @@ class UserRepository:
             )
 
         query = f"""UPDATE users SET updated_at = %s, {
-            ",".join([f'{field} = {value}' for field, value in patch_data.items()])
+        ",".join([f'{field} = {value}' for field, value in patch_data.items()])
         } WHERE user_id = %s;"""
 
         await self.connection.execute(
@@ -91,7 +91,7 @@ class UserRepository:
     async def _patch_user_base(self, username: str, field_name: str, field_value: str):
         query = f"""UPDATE users
             SET {
-            ','.join(f"" for i in range(10))
+        ','.join(f"" for i in range(10))
         } = %s updated_at = %s
             WHERE user_id=%s;"""
 
