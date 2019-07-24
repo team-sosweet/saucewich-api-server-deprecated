@@ -62,7 +62,7 @@ class UserRepository:
 
         query = f"""UPDATE users SET updated_at = %s, {
         ",".join([f'{field} = {value}' for field, value in patch_data.items()])
-        } WHERE user_id = %s;"""
+        } WHERE username = %s;"""
 
         await self.connection.execute(
             query,
@@ -87,19 +87,6 @@ class UserRepository:
         """
 
         return field in self.patchable_fields
-
-    async def _patch_user_base(self, username: str, field_name: str, field_value: str):
-        query = f"""UPDATE users
-            SET {
-        ','.join(f"" for i in range(10))
-        } = %s updated_at = %s
-            WHERE user_id=%s;"""
-
-        return await self.connection.execute(
-            query,
-            field_value,
-            username,
-        )
 
     async def save(self, user: Dict[str, Any]):
         query = """INSERT INTO `users` (
