@@ -40,7 +40,7 @@ class MySQLConnection(DBConnection):
 
     @classmethod
     async def _get_pool(cls) -> aiomysql.Pool:
-        if not cls.__pool or cls.__pool.__closed:
+        if not cls.__pool or cls.__pool._closed:
             cls.__pool = await aiomysql.create_pool(**cls.__connection_info)
 
         return cls.__pool
