@@ -1,6 +1,7 @@
 from typing import Dict, Any, List
 
 from pymysql import IntegrityError
+from sanic.exceptions import abort
 
 from app.core.exceptions import UserAlreadyExists, UserNotFound
 from app.repositories.user import UserRepository
@@ -14,24 +15,18 @@ class UserService:
         try:
             await self.repository.save(user)
         except IntegrityError:
-            raise UserAlreadyExists(
-                f"""user '{ user['username'] }' already exists"""
-            )
+            abort(409)
 
     async def patch(self, username: str, patch_data: Dict[str, Any]):
         if not await self.repository.get(username):
-            raise UserNotFound(
-                f"user '{username}' is not found"
-            )
+            abort(404)
 
         await self.repository.patch(username, patch_data)
 
     async def get(self, username: str) -> Dict[str, Any]:
         user = await self.repository.get(username)
         if not user:
-            raise UserNotFound(
-                f"user '{username}' is not found"
-            )
+            abort(404)
 
         return user
 
