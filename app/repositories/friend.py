@@ -30,7 +30,7 @@ class FriendRepository:
             user_id,
         )
 
-    async def save(self, user_id: int, friend_id: int):
+    async def save(self, friend: Dict[str, int]):
         query = """INSERT INTO `friends` (
             user_id,
             friend_id,
@@ -39,9 +39,9 @@ class FriendRepository:
         await self.connection.execute(
             query,
             (
-                user_id,
-                friend_id,
-                friend_id,
-                user_id,
+                friend['user_id'],
+                friend['friend_id'],
+                friend['friend_id'],
+                friend['user_id'],
             ),
         )
