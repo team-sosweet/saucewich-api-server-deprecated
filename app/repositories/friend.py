@@ -16,7 +16,7 @@ class FriendRepository:
                 FOREIGN KEY (user_id) REFERENCES users(seq),
                 FOREIGN KEY (friend_id) REFERENCES users(seq),
                 
-                UNIQUE KEY `user_friend_id` (user_id, friend_id)
+                UNIQUE KEY user_friend_id (user_id, friend_id)
             ) CHARACTER SET utf8mb4;
     """
 
@@ -24,10 +24,10 @@ class FriendRepository:
         self.connection = connection
 
     async def get_all(self, user_id: int) -> List[Dict[str, Any]]:
-        query = "SELECT friend_at, created_at FROM `friends` where user_id = %d"
+        query = "SELECT friend_id, created_at FROM `friends` where user_id = %s"
         return await self.connection.fetchall(
             query,
-            user_id,
+            str(user_id),
         )
 
     async def save(self, friend: Dict[str, int]):
