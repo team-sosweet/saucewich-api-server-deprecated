@@ -29,7 +29,7 @@ async def migrate(app, loop):
 
 
 async def stop(app, loop):
-    await MySQLConnection.close()
+    await MySQLConnection.destroy()
 
     logger.info('Database connection closed.')
 
