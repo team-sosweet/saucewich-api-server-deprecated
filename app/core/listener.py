@@ -19,10 +19,17 @@ async def initialize(app, loop):
         'autocommit': True,
     })
 
+    logger.info('Database initialization is completed.')
+
 
 async def migrate(app, loop):
     await MySQLConnection.execute(UserRepository.table_creation_query)
 
+    logger.info('Database migration is completed.')
+
 
 async def stop(app, loop):
     await MySQLConnection.close()
+
+    logger.info('Database connection closed.')
+
