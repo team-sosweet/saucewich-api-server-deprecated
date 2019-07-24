@@ -1,10 +1,28 @@
-from app.models import db, BaseModel
+import os
+
+from sanic.log import logger
+
+from app.repositories.connections import MySQLConnection
+from app.repositories.user import UserRepository
 
 
-async def setup(app, loop):
-    await db.connect(loop)
-    await db.create_tables(BaseModel.__subclasses__(), safe=True)
+async def initialize(app, loop):
+    await MySQLConnection.initialize({
+        'use_unicode': True,
+        'charset': 'utf8mb4',
+        'user': 'root',
+        'password': '',
+        'db': 'saucewich',
+        'host': 'localhost',
+        'port': 3306,
+        'loop': None,
+        'autocommit': True,
+    })
+
+
+async def migrate(app, loop):
+    await MySQLConnection.execute(UserRepository.table_creation_query)
 
 
 async def stop(app, loop):
-    await db.close()
+    await MySQLConnection.close()

@@ -1,15 +1,14 @@
 from sanic import Sanic
 from sanic.exceptions import NotFound
-from sanic.response import json, text
 from sanic_openapi import swagger_blueprint
 
 from app.core import listener, handler
 from app.config.dev import DevConfig
-from app.models import db
-from app.models.user import User
+
 
 def register_listeners(app: Sanic):
-    app.register_listener(listener.setup, 'before_server_start')
+    app.register_listener(listener.initialize, 'before_server_start')
+    app.register_listener(listener.migrate, 'before_server_start')
     app.register_listener(listener.stop, 'before_server_stop')
 
 
