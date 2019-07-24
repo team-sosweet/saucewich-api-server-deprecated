@@ -1,9 +1,7 @@
 from sanic import Blueprint
 
 from app.views.api.user.information import UserInformationView
-from app.views.api.user.money import UserMoneyView
 from app.views.api.user.patch import UserPatchView
-from app.views.api.user.point import UserPointView
 from app.views.api.user.signup import UserSignupView
 
 blueprint = Blueprint('user-api', '/user')
