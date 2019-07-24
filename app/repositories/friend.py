@@ -27,14 +27,16 @@ class FriendRepository:
         query = "SELECT friend_id, created_at FROM `friends` where user_id = %s"
         return await self.connection.fetchall(
             query,
-            str(user_id),
+            user_id,
         )
 
     async def save(self, friend: Dict[str, int]):
         query = """INSERT INTO `friends` (
             user_id,
-            friend_id,
-        ) VALUES (%d, %d), (%d, %d);"""
+            friend_id
+        ) VALUES (%s, %s), (%s, %s);"""
+
+        print(type(friend['user_id']))
 
         await self.connection.execute(
             query,

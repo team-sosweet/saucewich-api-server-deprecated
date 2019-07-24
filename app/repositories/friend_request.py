@@ -23,7 +23,7 @@ class FriendRequestRepository:
         self.connection = connection
 
     async def get_all(self, recipient: int) -> List[Dict[str, Any]]:
-        query = "SELECT seq, sender, created_at FROM `friends` WHERE recipient = %d;"
+        query = "SELECT seq, sender, created_at FROM `friends` WHERE recipient = %s;"
         return await self.connection.fetchall(
             query,
             recipient,
@@ -44,7 +44,7 @@ class FriendRequestRepository:
         )
 
     async def delete(self, seq: int):
-        query = "DELETE FROM `friend_requests` WHERE seq = %d;"
+        query = "DELETE FROM `friend_requests` WHERE seq = %s;"
 
         await self.connection.execute(
             query,
