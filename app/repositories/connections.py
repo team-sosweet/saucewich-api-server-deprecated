@@ -83,7 +83,7 @@ class MySQLConnection(DBConnection):
         async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
                 await cursor.execute(query, *args)
-                result = await cursor.fetchone(query, *args)
+                result = await cursor.fetchone()
 
         return result
 
@@ -96,6 +96,6 @@ class MySQLConnection(DBConnection):
         async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
                 await cursor.execute(query, *args)
-                result = await cursor.fetchall(query, *args)
+                result = await cursor.fetchall()
 
         return result
