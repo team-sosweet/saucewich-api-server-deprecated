@@ -6,32 +6,26 @@ import aiomysql
 
 class DBConnection(ABC):
     @abstractmethod
-    @classmethod
     async def initialize(cls, connection_info: Dict[str, Any]):
         ...
 
     @abstractmethod
-    @classmethod
     async def destroy(cls):
         ...
 
     @abstractmethod
-    @classmethod
     async def execute(cls, query, *args) -> int:
         ...
 
     @abstractmethod
-    @classmethod
     async def executemany(cls, query, *args) -> int:
         ...
 
     @abstractmethod
-    @classmethod
     async def fetchall(cls, query, *args) -> List[Dict[str, Any]]:
         ...
 
     @abstractmethod
-    @classmethod
     async def fetchone(cls, query, *args) -> Dict[str, Any]:
         ...
 
@@ -47,7 +41,7 @@ class MySQLConnection(DBConnection):
     @classmethod
     async def _get_pool(cls) -> aiomysql.Pool:
         if not cls.__pool or cls.__pool.__closed:
-            cls.__pool = aiomysql.create_pool(cls.__connection_info)
+            cls.__pool = await aiomysql.create_pool(**cls.__connection_info)
 
         return cls.__pool
 
@@ -59,7 +53,7 @@ class MySQLConnection(DBConnection):
 
         async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
-                result = cursor.execute(query, *args)
+                result = await cursor.execute(query, *args)
 
         return result
 
@@ -71,7 +65,7 @@ class MySQLConnection(DBConnection):
 
         async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
-                result = cursor.executemany(query, *args)
+                result = await cursor.executemany(query, *args)
 
         return result
 
