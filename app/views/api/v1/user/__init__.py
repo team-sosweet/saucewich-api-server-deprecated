@@ -3,7 +3,6 @@ from sanic import Blueprint
 from app.views.api.v1.user import patch, friend_request
 from app.views.api.v1.user.friend import UserFriendsView
 from app.views.api.v1.user.information import UserInformationView
-from app.views.api.v1.user.signup import UserSignupView
 
 blueprint = Blueprint.group(
     friend.blueprint,
