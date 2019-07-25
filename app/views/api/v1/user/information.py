@@ -17,4 +17,4 @@ class UserInformationView(HTTPMethodView):
         del user['password']
         return json(user)
 
-blueprint.add_route(UserInformationView.as_view(), '/')
+blueprint.add_route(UserInformationView.as_view(), '')
