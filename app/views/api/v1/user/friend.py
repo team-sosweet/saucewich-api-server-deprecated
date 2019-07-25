@@ -1,3 +1,4 @@
+from sanic import Blueprint
 from sanic.exceptions import abort
 from sanic.response import json
 from sanic.views import HTTPMethodView
@@ -7,6 +8,8 @@ from app.repositories.friend import FriendRepository
 from app.repositories.user import UserRepository
 from app.services.friend import FriendService
 from app.services.user import UserService
+
+blueprint = Blueprint('user-friend-api', url_prefix='/friends')
 
 class UserFriendsView(HTTPMethodView):
     user_repository = UserRepository(MySQLConnection)
@@ -27,3 +30,5 @@ class UserFriendsView(HTTPMethodView):
             abort(403)
 
         await self.friend_service.create(request.json)
+
+blueprint.add_route(UserFriendsView.as_view(), '/')

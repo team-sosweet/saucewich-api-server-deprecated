@@ -10,7 +10,8 @@ blueprint = Blueprint('user-api')
 # blueprint.add_route(UserSignupView.as_view(), '/signup')
 
 blueprint.add_route(UserInformationView.as_view(), '/')
-blueprint.add_route(UserFriendsView.as_view(), '/friends')
 
 blueprint = Blueprint.group(blueprint,
-                            *patch.create_patchable_blueprints(), url_prefix='/user/<username>')
+                            friend.blueprint,
+                            *patch.create_patchable_blueprints(),
+                            url_prefix='/user/<username>')
