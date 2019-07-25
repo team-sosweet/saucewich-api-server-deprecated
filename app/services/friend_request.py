@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 from pymysql import IntegrityError
 from sanic.exceptions import abort
@@ -19,6 +19,14 @@ class FriendRequestService:
             abort(400)
         except TypeError:
             abort(400)
+
+    async def get_all(self, seq: int) -> Dict[str, Any]:
+        friend_request = await self.repository.get(seq)
+
+        if not friend_request:
+            abort(404)
+
+        return friend_request
 
     async def get_all(self, recipient: int) -> List[Dict[str, Any]]:
         friend_requests = await self.repository.get_all(recipient)

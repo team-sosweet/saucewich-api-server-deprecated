@@ -1,4 +1,4 @@
-from typing import Type, Dict, Any, List
+from typing import Type, Dict, Any, List, Optional
 
 from app.repositories.connections import DBConnection
 
@@ -22,8 +22,16 @@ class FriendRequestRepository:
     def __init__(self, connection: Type[DBConnection]):
         self.connection = connection
 
+    async def get(self, seq: int) -> Optional[Dict[str, Any]]:
+        query = "SELECT seq, sender, created_at FROM `friend_requests` WHERE seq = %s;"
+
+        return await self.connection.fetchone(
+            query,
+            seq,
+        )
+
     async def get_all(self, recipient: int) -> List[Dict[str, Any]]:
-        query = "SELECT seq, sender, created_at FROM `friends` WHERE recipient = %s;"
+        query = "SELECT seq, sender, created_at FROM `friend_requests` WHERE recipient = %s;"
         return await self.connection.fetchall(
             query,
             recipient,
