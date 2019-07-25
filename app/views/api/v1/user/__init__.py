@@ -1,9 +1,9 @@
 from sanic import Blueprint
 
-from app.views.api.user.friend import UserFriendsView
-from app.views.api.user.information import UserInformationView
-from app.views.api.user.patch import UserPatchView
-from app.views.api.user.signup import UserSignupView
+from app.views.api.v1.user.friend import UserFriendsView
+from app.views.api.v1.user.information import UserInformationView
+from app.views.api.v1.user.patch import UserPatchView
+from app.views.api.v1.user.signup import UserSignupView
 
 blueprint = Blueprint('user-api', '/user')
 
