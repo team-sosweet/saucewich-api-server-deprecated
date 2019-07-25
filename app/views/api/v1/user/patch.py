@@ -1,3 +1,6 @@
+from typing import List
+
+from sanic import Blueprint
 from sanic.exceptions import abort
 from sanic.request import Request
 from sanic.response import json
@@ -8,11 +11,31 @@ from app.repositories.user import UserRepository
 from app.services.user import UserService
 
 
-class UserPatchView(HTTPMethodView):
+def create_patchable_blueprint(field: str) -> Blueprint:
+    blueprint = Blueprint(f'user-patch-{field}', url_prefix=f'/{field}')
+
+    class UserPatchView(UserPatchBaseView):
+        field_name = field
+
+    blueprint.add_route(UserPatchView.as_view(), '/')
+
+    return blueprint
+
+
+def create_patchable_blueprints() -> List[Blueprint]:
+    return list(
+        map(create_patchable_blueprint, UserRepository.patchable_fields)
+    )
+
+
+class UserPatchBaseView(HTTPMethodView):
     repository = UserRepository(MySQLConnection)
     service = UserService(repository)
 
-    async def get(self, request, username: str, field_name: str):
+    field_name: str
+
+    async def get(self, request, username: str):
+        field_name = self.field_name
         if field_name not in self.repository.patchable_fields:
             abort(404)
         user = await self.service.get(username)
@@ -20,9 +43,10 @@ class UserPatchView(HTTPMethodView):
             field_name: user[field_name]
         })
 
-    async def post(self, request, username: str, field_name: str):
-        if field_name not in self.repository.patchable_fields:
-            abort(404)
+    async def post(self, request, username: str):
+        field_name = self.field_name
+        if field_name not in self.service.patchable_fields:
+            abort(403)
         user = await self.service.get(username)
         await self.repository.patch(
             username,
