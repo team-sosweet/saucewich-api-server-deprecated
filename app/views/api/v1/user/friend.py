@@ -11,6 +11,7 @@ from app.services.user import UserService
 
 blueprint = Blueprint('user-friend-api', url_prefix='/friends')
 
+
 class UserFriendsView(HTTPMethodView):
     user_repository = UserRepository(MySQLConnection)
     user_service = UserService(user_repository)
@@ -30,5 +31,6 @@ class UserFriendsView(HTTPMethodView):
             abort(403)
 
         await self.friend_service.create(request.json)
+
 
 blueprint.add_route(UserFriendsView.as_view(), '/')

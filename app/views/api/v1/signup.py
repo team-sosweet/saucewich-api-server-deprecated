@@ -20,4 +20,5 @@ class UserSignupView(HTTPMethodView):
             'success': True
         })
 
+
 blueprint.add_route(UserSignupView.as_view(), '/')

@@ -1,4 +1,4 @@
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 
 from pymysql import IntegrityError
 from sanic.exceptions import abort

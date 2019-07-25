@@ -8,6 +8,7 @@ from app.services.user import UserService
 
 blueprint = Blueprint('user-information-api', '/')
 
+
 class UserInformationView(HTTPMethodView):
     repository = UserRepository(MySQLConnection)
     service = UserService(repository)
@@ -16,5 +17,6 @@ class UserInformationView(HTTPMethodView):
         user = await self.service.get(username)
         del user['password']
         return json(user)
+
 
 blueprint.add_route(UserInformationView.as_view(), '')
