@@ -1,1 +1,1 @@
-sanic-openapi==0.5.3
+git+git://github.com/huge-success/sanic-openapi@a99b98f03425c38248cb1b0f5f6f21b0a5498d81#egg=sanic_openapi
