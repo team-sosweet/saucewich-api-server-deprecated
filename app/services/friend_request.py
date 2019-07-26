@@ -20,7 +20,7 @@ class FriendRequestService:
         except TypeError:
             abort(400)
 
-    async def get_all(self, seq: int) -> Dict[str, Any]:
+    async def get(self, seq: int) -> Dict[str, Any]:
         friend_request = await self.repository.get(seq)
 
         if not friend_request:

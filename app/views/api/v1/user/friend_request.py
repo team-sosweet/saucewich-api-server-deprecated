@@ -64,7 +64,7 @@ class UserFriendRequestDetailView(HTTPMethodView):
         user = await self.user_service.get(username)
         friend_request = await self.friend_request_service.get(friend_request_id)
 
-        if user['seq'] != friend_request_id['recipient']:
+        if user['seq'] != friend_request['recipient']:
             abort(403)
 
         await self.friend_request_service.delete(friend_request_id)
