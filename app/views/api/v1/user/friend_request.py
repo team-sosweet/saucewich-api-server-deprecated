@@ -71,4 +71,4 @@ class UserFriendRequestDetailView(HTTPMethodView):
 
 
 blueprint.add_route(UserFriendRequestView.as_view(), '/')
-blueprint.add_route(UserFriendRequestDetailView.as_view(), '/<int:friend_request_id>')
+blueprint.add_route(UserFriendRequestDetailView.as_view(), '/<friend_request_id:int>')
