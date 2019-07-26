@@ -26,6 +26,11 @@ class UserRegistration:
     nickname = doc.String('nickname of the user')
 
 
+class UserAuthentication:
+    username = doc.String('username of the user')
+    password = doc.String('password of the user')
+
+
 class Friend:
     friend_id = doc.Integer('user id of the friend')
     created_at = doc.DateTime('timestamp when the relationship was established')
