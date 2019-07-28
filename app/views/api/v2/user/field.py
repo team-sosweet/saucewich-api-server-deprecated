@@ -11,10 +11,10 @@ from app.repositories.user import UserRepository
 from app.services.user import UserService
 
 
-def create_patchable_blueprint(patch_field: str, patch_field_type: Type[type]) -> Blueprint:
+def create_gettable_blueprint(patch_field: str, patch_field_type: Type[type]) -> Blueprint:
     blueprint = Blueprint(f'user-patch-{patch_field}-api', url_prefix=f'/{patch_field}')
 
-    class UserPatchView(HTTPMethodView):
+    class UserFieldGetterView(HTTPMethodView):
         repository = UserRepository(MySQLConnection)
         service = UserService(repository)
 
@@ -38,43 +38,12 @@ def create_patchable_blueprint(patch_field: str, patch_field_type: Type[type]) -
                 field_name: user[field_name]
             })
 
-        @doc.summary(f'Patch {field_name} of user')
-        @doc.consumes(
-            {
-                'patch_data': {
-                    patch_field: patch_field_type
-                }
-            },
-            location="body",
-            content_type='application/json'
-        )
-        @doc.produces(
-            {
-                'success': bool
-            },
-            description='Result of the patch',
-            content_type='application/json')
-        async def put(self, request, username: str):
-            field_name = self.field_name
-            if field_name not in self.service.patchable_fields:
-                abort(403)
-            user = await self.service.get(username)
-            await self.repository.patch(
-                username,
-                {
-                    field_name: user[field_name] + request.json[field_name]
-                }
-            )
-            return json({
-                'success': True
-            })
-
-    blueprint.add_route(UserPatchView.as_view(), '/')
+    blueprint.add_route(UserFieldGetterView.as_view(), '/')
 
     return blueprint
 
 
-def create_patchable_blueprints() -> List[Blueprint]:
+def create_gettable_blueprints() -> List[Blueprint]:
     def filter_nickname(s: str):
         if s == 'nickname':
             return s, str
@@ -83,5 +52,5 @@ def create_patchable_blueprints() -> List[Blueprint]:
 
     fields_with_type = map(filter_nickname, UserRepository.patchable_fields)
     return list(
-        map(lambda args: create_patchable_blueprint(*args), fields_with_type)
+        map(lambda args: create_gettable_blueprint(*args), fields_with_type)
     )

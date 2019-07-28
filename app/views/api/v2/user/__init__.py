@@ -1,13 +1,16 @@
 from sanic import Blueprint
 
-from app.views.api.v1.user import patch, friend_request
-from app.views.api.v1.user.friend import UserFriendsView
-from app.views.api.v1.user.information import UserInformationView
+from app.views.api.v2.user import (
+    field,
+    friend,
+    friend_request,
+    information
+)
 
 blueprint = Blueprint.group(
     friend.blueprint,
     friend_request.blueprint,
     information.blueprint,
-    *patch.create_patchable_blueprints(),
+    *field.create_gettable_blueprints(),
     url_prefix='/user/<username>'
 )
