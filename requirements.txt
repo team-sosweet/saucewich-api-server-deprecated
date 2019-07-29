@@ -1,3 +1,4 @@
 aiomysql==0.0.20
+aioredis==1.2.0
 Werkzeug==0.15.5
 sanic==19.6.2
