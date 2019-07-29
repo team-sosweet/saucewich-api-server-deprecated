@@ -29,7 +29,7 @@ class UserFriendsView(HTTPMethodView):
             'friends': await self.friend_service.get_all(user['seq'])
         })
 
-    @doc.summary('Create friend relationship of ')
+    @doc.summary('Create friend relationship of user')
     @doc.consumes(FriendCreation, content_type='application/json', location='body', required=True)
     async def post(self, request, username: str):
         user = await self.user_service.get(username)
