@@ -133,6 +133,11 @@ class KVConnection(ABC):
     async def delete(cls, key: str) -> None:
         ...
 
+    @classmethod
+    @abstractmethod
+    async def exists(cls, key: str) -> bool:
+        ...
+
 
 class RedisConnection(KVConnection):
     redis: aioredis.Redis = None
@@ -169,6 +174,10 @@ class RedisConnection(KVConnection):
     @classmethod
     async def delete(cls, key: str) -> None:
         await cls.redis.delete(key)
+
+    @classmethod
+    async def exists(cls, key: str) -> bool:
+        return cls.redis.exists(key)
 
     @classmethod
     async def flush_all(cls):
