@@ -1,6 +1,6 @@
 from sanic.log import logger
 
-from app.repositories.connections import MySQLConnection
+from app.repositories.connections import MySQLConnection, RedisConnection
 from app.repositories.friend import FriendRepository
 from app.repositories.friend_request import FriendRequestRepository
 from app.repositories.user import UserRepository
@@ -19,6 +19,11 @@ async def initialize(app, loop):
         'autocommit': True,
     })
 
+    await RedisConnection.initialize({
+        "minsize": 5,
+        "maxsize": 10,
+    })
+
     logger.info('Database initialization is completed.')
 
 
@@ -32,5 +37,6 @@ async def migrate(app, loop):
 
 async def stop(app, loop):
     await MySQLConnection.destroy()
+    await RedisConnection.destroy()
 
     logger.info('Database connection closed.')
