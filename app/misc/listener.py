@@ -19,11 +19,6 @@ async def initialize(app, loop):
         'autocommit': True,
     })
 
-    await RedisConnection.initialize({
-        "minsize": 5,
-        "maxsize": 10,
-    })
-
     logger.info('Database initialization is completed.')
 
 
@@ -37,6 +32,5 @@ async def migrate(app, loop):
 
 async def stop(app, loop):
     await MySQLConnection.destroy()
-    await RedisConnection.destroy()
 
     logger.info('Database connection closed.')
