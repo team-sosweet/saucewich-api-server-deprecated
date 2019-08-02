@@ -1,6 +1,6 @@
 from sanic.log import logger
 
-from app.repositories.connections import MySQLConnection
+from app.repositories.connections import MySQLConnection, RedisConnection
 from app.repositories.friend import FriendRepository
 from app.repositories.friend_request import FriendRequestRepository
 from app.repositories.user import UserRepository

@@ -1,7 +1,9 @@
+import json
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 import aiomysql
+import aioredis
 
 
 class DBConnection(ABC):
@@ -99,3 +101,93 @@ class MySQLConnection(DBConnection):
                 result = await cursor.fetchall()
 
         return result
+
+
+class KVConnection(ABC):
+    """
+    Interface for `key-value database connection`
+    """
+
+    @classmethod
+    @abstractmethod
+    async def initialize(cls, connection_info):
+        ...
+
+    @classmethod
+    @abstractmethod
+    async def destroy(cls):
+        ...
+
+    @classmethod
+    @abstractmethod
+    async def set(cls, key: str, value: Dict[str, Any]) -> None:
+        ...
+
+    @classmethod
+    @abstractmethod
+    async def get(cls, key: str) -> Dict[str, Any]:
+        ...
+
+    @classmethod
+    @abstractmethod
+    async def delete(cls, key: str) -> None:
+        ...
+
+    @classmethod
+    @abstractmethod
+    async def exists(cls, key: str) -> bool:
+        ...
+
+    @classmethod
+    @abstractmethod
+    async def expire(cls, key: str, timeout: int) -> bool:
+        ...
+
+
+class RedisConnection(KVConnection):
+    redis: aioredis.Redis = None
+
+    @classmethod
+    async def initialize(cls, connection_info: Dict[str, Any]):
+        if cls.redis and not cls.redis.closed:
+            return cls.redis
+
+        cls.redis = await aioredis.create_redis_pool(**connection_info)
+
+        return cls.redis
+
+    @classmethod
+    async def destroy(cls):
+        if cls.redis:
+            cls.redis.close()
+            await cls.redis.wait_closed()
+
+        cls.redis = None
+
+    @classmethod
+    async def set(cls, key: str, value: Dict[str, Any]) -> None:
+        dumped_value = json.dumps(value)
+        await cls.redis.set(key, dumped_value)
+
+    @classmethod
+    async def get(cls, key: str) -> Optional[Dict[str, Any]]:
+        value = await cls.redis.get(key)
+        value = json.loads(value) if value else None
+
+        return value
+
+    @classmethod
+    async def delete(cls, key: str) -> None:
+        await cls.redis.delete(key)
+
+    @classmethod
+    async def exists(cls, key: str) -> bool:
+        return cls.redis.exists(key)
+
+    @classmethod
+    async def expire(cls, key: str, timeout: int) -> bool:
+        return bool(cls.redis.expire(key, timeout))
+
+    @classmethod
+    async def flush_all(cls):
+        await cls.redis.flushall()
