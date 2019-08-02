@@ -1,10 +1,8 @@
 from sanic import Blueprint
 
-from app.views.api.v1 import user, signup, signin
+from app.views.api.v2 import user
 
 blueprint = Blueprint.group(
     user.blueprint,
-    signin.blueprint,
-    signup.blueprint,
-    url_prefix='/v1',
+    url_prefix='/v2',
 )
