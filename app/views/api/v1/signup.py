@@ -22,7 +22,7 @@ class UserSignupView(HTTPMethodView):
         location='body',
         content_type='application/json',
         required=True)
-    @doc.produces({ 'success': bool }, description='the result of account registration', content_type='application/json')
+    @doc.produces({'success': bool}, description='the result of account registration', content_type='application/json')
     async def post(self, request: Request):
         await self.service.create(request.json)
         return json({

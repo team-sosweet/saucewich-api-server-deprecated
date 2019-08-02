@@ -23,12 +23,14 @@ class UserSigninView(HTTPMethodView):
         location='body',
         content_type='application/json',
         required=True)
-    @doc.produces({ 'success': bool }, description='the result of account authentication', content_type='application/json')
+    @doc.produces({'success': bool}, description='the result of account authentication',
+                  content_type='application/json')
     async def post(self, request: Request):
         user = await self.service.get(request.json['username'])
         return json({
             'success':
                 check_password_hash(user['password'], (request.json['password']))
         })
+
 
 blueprint.add_route(UserSigninView.as_view(), '/')

@@ -22,7 +22,7 @@ class UserFriendsView(HTTPMethodView):
     friend_service = FriendService(friend_repository)
 
     @doc.summary('Get friends of user')
-    @doc.produces({ 'friends': [Friend] }, description='Friends of user')
+    @doc.produces({'friends': [Friend]}, description='Friends of user')
     async def get(self, request, username: str):
         user = await self.user_service.get(username)
         return json({

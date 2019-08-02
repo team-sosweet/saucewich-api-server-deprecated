@@ -22,7 +22,7 @@ class UserFriendRequestView(HTTPMethodView):
     friend_request_service = FriendRequestService(friend_request_repository)
 
     @doc.summary('Get friend requests to the user')
-    @doc.produces({ 'requests': [FriendRequest] }, description='Requests to the user', content_type='application/json')
+    @doc.produces({'requests': [FriendRequest]}, description='Requests to the user', content_type='application/json')
     async def get(self, request, username: str):
         user = await self.user_service.get(username)
         return json({
@@ -47,7 +47,8 @@ class UserFriendRequestDetailView(HTTPMethodView):
     friend_request_service = FriendRequestService(friend_request_repository)
 
     @doc.summary('Get friend request')
-    @doc.produces({ 'request': FriendRequest }, description='Request for the friend_request_id', content_type='application/json')
+    @doc.produces({'request': FriendRequest}, description='Request for the friend_request_id',
+                  content_type='application/json')
     async def get(self, request, username: str, friend_request_id: int):
         user = await self.user_service.get(username)
         friend_request = await self.friend_request_service.get(friend_request_id)

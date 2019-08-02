@@ -3,7 +3,6 @@ from sanic.response import json
 from sanic.views import HTTPMethodView
 from sanic_openapi import doc
 
-from app.misc import models
 from app.misc.models import User
 from app.repositories.connections import MySQLConnection
 from app.repositories.user import UserRepository
