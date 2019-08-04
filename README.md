@@ -14,7 +14,6 @@ $ pip install -r requirements_dev.txt  # if it's development environment
 ## Specifications
 
 - Account Data
-    - ID & PW
     - Nickname
     - Friends
     - Level / exp
@@ -23,5 +22,4 @@ $ pip install -r requirements_dev.txt  # if it's development environment
     - KDR
     - W/L
     - Playtime
-- Matchmaking
 - Notice/Event System
