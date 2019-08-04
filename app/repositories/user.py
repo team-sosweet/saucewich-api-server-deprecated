@@ -22,8 +22,7 @@ class UserRepository:
     table_creation_query = """
             CREATE TABLE IF NOT EXISTS users (
                 seq INT(11) AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(20) NOT NULL UNIQUE,
-                password VARCHAR(100) NOT NULL,
+                user_id INT(11) NOT NULL,
                 nickname VARCHAR(20) NOT NULL,
                 exp     BIGINT  DEFAULT 0,
                 point   BIGINT  DEFAULT 0,
@@ -34,7 +33,9 @@ class UserRepository:
                 defeat_stats  BIGINT  DEFAULT 0,
                 playtime BIGINT DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                
+                FOREIGN KEY (user_id) REFERENCES account(seq)
             ) CHARACTER SET utf8mb4;
     """
 
@@ -42,7 +43,7 @@ class UserRepository:
         self.connection = connection
 
     async def get(self, username: str) -> Optional[Dict[str, Any]]:
-        query = "SELECT * FROM `users` WHERE username = %s"
+        query = "SELECT `users`.*, `account`.`username` FROM `users` LEFT JOIN `account` ON `users`.`user_id` = `account`.`seq` AND `account`.`username` = %s"
         return await self.connection.fetchone(
             query,
             username,
@@ -61,9 +62,10 @@ class UserRepository:
                 + str(patch_data)
             )
 
-        query = f"""UPDATE users SET updated_at = %s, {
+        # FIXME: INNER JOIN is right?
+        query = f"""UPDATE `users` INNER JOIN `account` ON `account`.`seq` = `users`.`uesr_id` SET updated_at = %s, {
         ",".join([f'{field} = {value}' for field, value in patch_data.items()])
-        } WHERE username = %s;"""
+        } WHERE `account`.`username` = %s;"""
 
         await self.connection.execute(
             query,
