@@ -11,23 +11,23 @@ from app.repositories.user import UserRepository
 from app.services.user import UserService
 
 
-def create_gettable_blueprint(patch_field: str, patch_field_type: Type[type]) -> Blueprint:
-    blueprint = Blueprint(f'user-patch-{patch_field}-api', url_prefix=f'/{patch_field}')
+def create_gettable_blueprint(getter_field: str, getter_field_type: Type[type]) -> Blueprint:
+    blueprint = Blueprint(f'user-{getter_field}-field-api', url_prefix=f'/{getter_field}')
 
     class UserFieldGetterView(HTTPMethodView):
         repository = UserRepository(MySQLConnection)
         service = UserService(repository)
 
-        field_name: str = patch_field
-        field_type: type = patch_field_type
+        field_name: str = getter_field
+        field_type: type = getter_field_type
 
         @doc.summary(f'Get {field_name} of user')
         @doc.produces(
             {
-                patch_field: patch_field_type
+                getter_field: getter_field_type
             },
             content_type='application/json',
-            description=f'The value of {patch_field} field'
+            description=f'The value of {getter_field} field'
         )
         async def get(self, request, username: str):
             field_name = self.field_name

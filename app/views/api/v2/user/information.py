@@ -19,7 +19,8 @@ class UserInformationView(HTTPMethodView):
     @doc.produces(User, description='User of the username', content_type='application/json')
     async def get(self, request, username: str):
         user = await self.service.get(username)
-        del user['password']
+        del user['seq']
+        del user['user_id']
         return json(user)
 
 

@@ -1,6 +1,6 @@
 class DevConfig():
     HOST = 'localhost'
-    PORT = 8000
+    PORT = 8888
     DEBUG = True
 
     RUN_SETTING = dict(**{
