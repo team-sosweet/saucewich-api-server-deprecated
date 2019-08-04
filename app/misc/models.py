@@ -6,7 +6,6 @@ from sanic_openapi import doc
 
 
 class User:
-    seq = doc.Integer('unique id of the user')
     username = doc.String('username of the user')
     nickname = doc.String('nickname of the user')
 
